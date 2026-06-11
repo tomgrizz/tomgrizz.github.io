@@ -176,9 +176,15 @@
   }
   @media(max-width:760px){.research-card{grid-template-columns:1fr;padding:26px}}
   .research-card h3{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.3;margin-bottom:12px}
-  .research-figure{margin:0 0 26px}
-  .research-figure img{border:1.5px solid var(--ink);background:#fff;width:100%}
+  .research-figure{margin:26px 0 0}
+  .research-figure.narrow{max-width:440px;margin-left:auto;margin-right:auto}
+  .research-figure img,.research-figure video{border:1.5px solid var(--ink);background:#fff;width:100%;display:block}
   .research-figure figcaption{margin-top:10px;font-size:13.5px;font-style:italic;color:var(--sounding)}
+  .research-card video{border:1.5px solid var(--ink);background:#000;width:100%;display:block}
+  .research-card .repo-link{display:inline-block;margin-top:8px;font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+  .walleye-illo{margin:18px 0 0}
+  .walleye-illo img{width:100%;max-width:300px;border:1px solid var(--line);background:#fff}
+  .research-stack > .panel + .panel{margin-top:24px}
   .findings{list-style:none}
   .findings li{padding:12px 0 12px 26px;border-bottom:1px solid var(--line);position:relative;font-size:16px}
   .findings li:last-child{border-bottom:none}
@@ -330,29 +336,57 @@
 </section>
 
 <section id="research">
-  <div class="wrap"><div class="panel">
-    <p class="eyebrow"><span class="no">02</span> Research</p>
-    <h2>Where do young walleye actually go?</h2>
-    <figure class="research-figure">
-      <img src="walleye.jpg" alt="A walleye tagged with an acoustic transmitter in the Bay of Quinte" loading="lazy">
-      <figcaption>A young walleye tagged with an acoustic transmitter, Bay of Quinte</figcaption>
-    </figure>
-    <div class="research-card">
-      <div>
-        <h3>Investigating young walleye movement and migration in the Bay of Quinte and Lake Ontario using acoustic telemetry</h3>
-        <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">MSc Thesis · Queen's University · Freshwater Fisheries Conservation Lab · 2026</p>
-        <p>Twenty-nine young, sexually mature male walleye were tagged with acoustic transmitters in the Napanee and Trent Rivers and tracked for five years across the GLATOS receiver network — producing 65 fish-years of fine-scale movement data on a life stage that traditional netting surveys could never resolve.</p>
+  <div class="wrap research-stack">
+
+    <div class="panel">
+      <p class="eyebrow"><span class="no">02</span> Research · Computer Vision</p>
+      <h2>Teaching computers to count fish</h2>
+      <div class="research-card">
+        <div>
+          <h3>lake-ontario-fish-cv</h3>
+          <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">Automated species identification for fishway counters</p>
+          <p>Deep-learning models that detect, classify, and track salmonids in fishway counter video, replacing slow manual review with frame-by-frame species calls and confidence scores. Built with MNR Science &amp; Research and the University of Toronto to scale up counter assessment across Lake Ontario tributaries. Shown: live annotated detections from the Ganaraska River counter.</p>
+          <a class="repo-link" href="https://github.com/tomgrizz/lake-ontario-fish-cv" target="_blank" rel="noopener">View repo ↗</a>
+        </div>
+        <div>
+          <video src="fish-cv-demo.mp4" poster="fish-cv-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Annotated fishway counter video with computer-vision detection boxes and species-confidence scores"></video>
+        </div>
       </div>
-      <div>
-        <ul class="findings">
-          <li>Walleye as young as <strong>age 3</strong> migrated out of the bay into eastern Lake Ontario — earlier than traditional assessment methods suggested.</li>
-          <li>Individual migrations were <strong>highly repeatable</strong> year over year (R = 0.88–0.91), mirroring patterns documented in adults.</li>
-          <li>Age predicted annual distance travelled, but <strong>not</strong> range extent or distance from spawning grounds — individual behaviour mattered more.</li>
-          <li>Tagged fish crossed into U.S. waters, underscoring the need for <strong>bi-national assessment</strong> of the Lake Ontario walleye fishery.</li>
-        </ul>
-      </div>
+      <figure class="research-figure narrow">
+        <video src="feature-space.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Rotating 3D plot of the classification model's learned feature space, with species forming distinct clusters"></video>
+        <figcaption>The model's learned feature space — each species clusters separately in three dimensions, the signal that lets the classifier tell them apart.</figcaption>
+      </figure>
     </div>
-  </div></div>
+
+    <div class="panel">
+      <p class="eyebrow">Research · Acoustic Telemetry</p>
+      <h2>Where do young walleye actually go?</h2>
+      <div class="research-card">
+        <div>
+          <h3>Investigating young walleye movement and migration in the Bay of Quinte and Lake Ontario using acoustic telemetry</h3>
+          <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">MSc Thesis · Queen's University · Freshwater Fisheries Conservation Lab · 2026</p>
+          <p>Twenty-nine young, sexually mature male walleye were tagged with acoustic transmitters in the Napanee and Trent Rivers and tracked for five years across the GLATOS receiver network — producing 65 fish-years of fine-scale movement data on a life stage that traditional netting surveys could never resolve.</p>
+          <figure class="walleye-illo">
+            <img src="walleye.jpg" alt="Illustration of a walleye (Sander vitreus)" loading="lazy">
+            <figcaption style="margin-top:8px;font-size:13px;font-style:italic;color:var(--sounding)">Walleye — <em>Sander vitreus</em></figcaption>
+          </figure>
+        </div>
+        <div>
+          <ul class="findings">
+            <li>Walleye as young as <strong>age 3</strong> migrated out of the bay into eastern Lake Ontario — earlier than traditional assessment methods suggested.</li>
+            <li>Individual migrations were <strong>highly repeatable</strong> year over year (R = 0.88–0.91), mirroring patterns documented in adults.</li>
+            <li>Age predicted annual distance travelled, but <strong>not</strong> range extent or distance from spawning grounds — individual behaviour mattered more.</li>
+            <li>Tagged fish crossed into U.S. waters, underscoring the need for <strong>bi-national assessment</strong> of the Lake Ontario walleye fishery.</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="research-figure">
+        <img src="walleye-movement-map.jpg" alt="Four maps of the Bay of Quinte and eastern Lake Ontario showing tagged walleye detections by age class (3, 4, 5, and 6+), coloured by individual fish" loading="lazy">
+        <figcaption>Summer &amp; fall acoustic detections by age class — coloured by individual fish, with spawning rivers and the GLATOS receiver grid. Older fish range further from the Bay of Quinte.</figcaption>
+      </figure>
+    </div>
+
+  </div>
 </section>
 
 <section id="projects">
@@ -362,13 +396,6 @@
     <p style="max-width:620px;color:var(--ink-soft);margin:-6px 0 26px">Software I build to make fisheries monitoring faster and more accurate — fishway video review, interactive regulation modelling, and the spatial tooling behind this site's map.</p>
     <div class="proj-grid">
       <article class="proj">
-        <video class="shot" src="fish-cv-demo.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Annotated fishway counter video with computer-vision detection boxes drawn around migrating fish"></video>
-        <span class="lang py">Python · Computer Vision</span>
-        <h3>lake-ontario-fish-cv</h3>
-        <p>Computer-vision models that detect, classify, and track fish in Lake Ontario monitoring video. Shown: live annotated detections from fishway counter footage.</p>
-        <a href="https://github.com/tomgrizz/lake-ontario-fish-cv" target="_blank" rel="noopener">View repo ↗</a>
-      </article>
-      <article class="proj">
         <img class="shot" src="fish-counter.jpg" alt="Fish counter video frame from the Credit River with a detection box drawn around a migrating salmonid" width="340" height="255" loading="lazy">
         <span class="lang py">Python · ML</span>
         <h3>fish_counter_app</h3>
@@ -376,12 +403,14 @@
         <a href="https://github.com/tomgrizz/fish_counter_app" target="_blank" rel="noopener">View repo ↗</a>
       </article>
       <article class="proj">
+        <img class="shot" src="riverwatcher-counts.jpg" alt="Daily and cumulative fish-count charts by species produced from RiverWatcher resistivity counter data" loading="lazy">
         <span class="lang">R</span>
         <h3>RiverWatcher_App</h3>
-        <p>R-based tool for working with RiverWatcher resistivity fish-counter data.</p>
+        <p>R-based tool for working with RiverWatcher resistivity fish-counter data. Shown: daily and cumulative counts by species from a season of fishway data.</p>
         <a href="https://github.com/tomgrizz/RiverWatcher_App" target="_blank" rel="noopener">View repo ↗</a>
       </article>
       <article class="proj">
+        <img class="shot" src="lakeontariospatial-map.jpg" alt="Shoreline map of Lake Ontario rendered by the lakeontariospatial R package" loading="lazy">
         <span class="lang">R</span>
         <h3>lakeontariospatial</h3>
         <p>Spatial tooling for Lake Ontario fisheries work — generating maps and sampling locations for assessment programs. The lake drifting behind this page is rendered from this package's shoreline data.</p>
