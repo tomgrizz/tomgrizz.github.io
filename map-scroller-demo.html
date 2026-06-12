@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll-driven viewBox camera — standalone demo</title>
+<style>
+  /* ------------------------------------------------------------------
+     SCROLL-DRIVEN viewBox CAMERA — standalone demo
+     The whole effect = one fixed SVG whose viewBox is animated on scroll.
+     Swap the <svg> contents for your own art and edit WAYPOINTS below.
+  ------------------------------------------------------------------ */
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    color:#14333D; background:#EDF2F3; line-height:1.6;
+  }
+
+  /* (1) the fixed full-viewport canvas behind everything */
+  .mapbg{position:fixed; inset:0; z-index:-1; pointer-events:none;}
+  .mapbg svg{width:100%; height:100%; display:block;}
+
+  /* (2) content floats in translucent, blurred panels so it stays legible */
+  section{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:48px 24px;}
+  .panel{
+    max-width:640px;
+    background:rgba(241,245,246,.66);
+    backdrop-filter:blur(4px) saturate(106%);
+    -webkit-backdrop-filter:blur(4px) saturate(106%);
+    border:1px solid rgba(74,124,140,.30);
+    box-shadow:0 18px 40px -26px rgba(20,51,61,.45);
+    padding:36px 40px;
+  }
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:#4A7C8C; font-weight:600;}
+  h1{font-size:clamp(32px,6vw,56px); letter-spacing:-.02em; margin:.3rem 0 .6rem;}
+  h2{font-size:clamp(24px,4vw,34px); letter-spacing:-.01em; margin:.3rem 0 .8rem;}
+  p{color:#3E5A63; max-width:48ch;}
+  code{background:rgba(74,124,140,.14); padding:1px 6px; border-radius:3px; font-size:.92em;}
+
+  /* (3) optional pulsing "beacon" marker (defined as SVG elements) */
+  .pulse{transform-box:fill-box; transform-origin:center; animation:ping 4.5s ease-out infinite;}
+  .pulse.p2{animation-delay:2.25s;}
+  @keyframes ping{0%{transform:scale(.2);opacity:.8} 100%{transform:scale(4);opacity:0}}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .pulse{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= (1) THE FIXED BACKGROUND SVG =================
+     Author all artwork in ONE coordinate space. Here it's 0 0 1440 700.
+     The starting viewBox is just the first waypoint. -->
+<div class="mapbg" aria-hidden="true">
+  <svg id="mapbg-svg" viewBox="320 30 1120 630" preserveAspectRatio="xMidYMid slice">
+
+    <!-- faint reference grid so the camera motion is obvious -->
+    <g stroke="#B9CDD1" stroke-width="1" opacity=".5">
+      <line x1="0" y1="100" x2="1440" y2="100"/><line x1="0" y1="200" x2="1440" y2="200"/>
+      <line x1="0" y1="300" x2="1440" y2="300"/><line x1="0" y1="400" x2="1440" y2="400"/>
+      <line x1="0" y1="500" x2="1440" y2="500"/><line x1="0" y1="600" x2="1440" y2="600"/>
+      <line x1="200" y1="0" x2="200" y2="700"/><line x1="400" y1="0" x2="400" y2="700"/>
+      <line x1="600" y1="0" x2="600" y2="700"/><line x1="800" y1="0" x2="800" y2="700"/>
+      <line x1="1000" y1="0" x2="1000" y2="700"/><line x1="1200" y1="0" x2="1200" y2="700"/>
+    </g>
+
+    <!-- a stand-in "landmass": replace with your own <path> art (map, floorplan, diagram…) -->
+    <path d="M120,520 C260,300 520,360 660,300 C820,232 1040,300 1180,240
+             C1300,300 1340,460 1180,520 C980,600 520,560 360,600 C220,632 80,600 120,520 Z"
+          fill="rgba(174,204,211,.55)" stroke="#4A7C8C" stroke-width="2"/>
+
+    <!-- nested "contours" to make zoom read clearly -->
+    <g fill="none" stroke="#4A7C8C" stroke-opacity=".4" stroke-width="1.4">
+      <ellipse cx="700" cy="420" rx="360" ry="120"/>
+      <ellipse cx="700" cy="420" rx="240" ry="78"/>
+      <ellipse cx="700" cy="420" rx="130" ry="44"/>
+    </g>
+
+    <!-- labels live in the same coordinate space and zoom with everything else -->
+    <g font-family="system-ui,sans-serif" font-size="13" letter-spacing="2" fill="#3E5A63" opacity=".8">
+      <text x="300" y="470">WEST POINT</text>
+      <text x="1010" y="250">EAST CAPE</text>
+      <text x="640" y="430">CENTRE BASIN</text>
+    </g>
+
+    <!-- (3) pulsing beacon: two staggered rings + a solid dot -->
+    <g>
+      <circle class="pulse"    cx="980" cy="300" r="6" fill="none" stroke="#B5446E" stroke-width="1.5"/>
+      <circle class="pulse p2" cx="980" cy="300" r="6" fill="none" stroke="#B5446E" stroke-width="1.5"/>
+      <circle cx="980" cy="300" r="3.5" fill="#B5446E" fill-opacity=".9"/>
+      <text x="958" y="320" font-family="system-ui,sans-serif" font-size="10" letter-spacing="1.6" fill="#B5446E" opacity=".85">BEACON</text>
+    </g>
+  </svg>
+</div>
+
+
+<!-- ================= (2) THE PAGE SECTIONS =================
+     Each id is referenced by a waypoint below. -->
+<section id="top">
+  <div class="panel">
+    <p class="eyebrow">Scroll to drive the camera</p>
+    <h1>viewBox camera</h1>
+    <p>The background is one fixed SVG. As you scroll, its <code>viewBox</code> is
+       interpolated between per-section waypoints, so the map pans and zooms.
+       Keep scrolling — watch the grid and the beacon.</p>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="panel">
+    <p class="eyebrow">Section 02</p>
+    <h2>Zoom out to the full extent</h2>
+    <p>This waypoint frames the entire <code>0 0 1440 700</code> drawing. Larger
+       width/height in the viewBox = more of the art visible = zoomed out.</p>
+  </div>
+</section>
+
+<section id="detail">
+  <div class="panel">
+    <p class="eyebrow">Section 03</p>
+    <h2>Punch in on a detail</h2>
+    <p>A small viewBox rectangle frames just the centre basin. The camera eases
+       in rather than snapping, because the current viewBox chases the target
+       a fraction each frame.</p>
+  </div>
+</section>
+
+<section id="beacon">
+  <div class="panel">
+    <p class="eyebrow">Section 04</p>
+    <h2>Frame the beacon</h2>
+    <p>Point a waypoint anywhere in the coordinate space — here, the pulsing
+       marker near the east cape. The marker animation is pure CSS, independent
+       of the camera.</p>
+  </div>
+</section>
+
+<section id="end">
+  <div class="panel">
+    <p class="eyebrow">Section 05 · fin</p>
+    <h2>Make it yours</h2>
+    <p>Replace the SVG contents with your own vector art and edit
+       <code>WAYPOINTS</code>. The engine below never needs to change.</p>
+  </div>
+</section>
+
+
+<!-- ================= (3) THE ENGINE (reusable, unchanged) ================= -->
+<script>
+(function(){
+  var svg = document.getElementById('mapbg-svg');
+  if(!svg) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Each section gets a target viewBox [x, y, w, h] in the SVG's own coord space.
+  // Smaller w/h = zoomed in. First entry pins scroll=0, last pins scroll=1.
+  var WAYPOINTS = [
+    {sel:'#top',      vb:[320,  30, 1120, 630]},  // partial view, top-right-ish
+    {sel:'#overview', vb:[0,     0, 1440, 700]},  // full extent
+    {sel:'#detail',   vb:[470, 300,  470, 300]},  // centre basin close-up
+    {sel:'#beacon',   vb:[820, 180,  360, 240]},  // frame the beacon
+    {sel:'#end',      vb:[60,  360,  760, 300]}   // sweep to the west point
+  ];
+
+  // Works whether the window scrolls or a wrapper element does.
+  function scroller(){ return document.scrollingElement || document.documentElement || document.body; }
+  function viewH(){ return window.innerHeight || scroller().clientHeight; }
+  function scrollPos(){ var se = scroller(); return window.scrollY || window.pageYOffset || se.scrollTop || 0; }
+  function maxScroll(){ var se = scroller(); return Math.max(1, se.scrollHeight - viewH()); }
+
+  // Convert each section's page position into a scroll-progress key (0..1).
+  var keys = [];
+  function layout(){
+    var docH = maxScroll();
+    keys = WAYPOINTS.map(function(w){
+      var el = document.querySelector(w.sel);
+      var top = el ? Math.max(0, el.offsetTop - viewH()*0.35) : 0; // trigger ~35% before section top
+      return {p: Math.min(1, top/docH), vb: w.vb};
+    });
+    keys[0].p = 0; keys[keys.length-1].p = 1;
+  }
+
+  function smooth(t){ return t*t*(3-2*t); }            // smoothstep easing between waypoints
+
+  // Interpolate the target viewBox for a given scroll progress p.
+  function targetVB(p){
+    if(p <= keys[0].p) return keys[0].vb;
+    for(var i=0;i<keys.length-1;i++){
+      var a=keys[i], b=keys[i+1];
+      if(p <= b.p){
+        var span = b.p - a.p || 1;
+        var t = smooth((p - a.p)/span);
+        return a.vb.map(function(v,j){ return v + (b.vb[j]-v)*t; });
+      }
+    }
+    return keys[keys.length-1].vb;
+  }
+
+  var cur = WAYPOINTS[0].vb.slice();
+  function setVB(v){ svg.setAttribute('viewBox', v.map(function(n){return n.toFixed(1);}).join(' ')); }
+
+  if(reduce){ setVB(cur); return; }                    // reduced-motion: static, no rAF loop
+
+  layout();
+  var lastH = 0;
+  function frame(){
+    var se = scroller();
+    if(se.scrollHeight !== lastH){ lastH = se.scrollHeight; layout(); } // re-measure as content/chrome shifts
+
+    var p = Math.min(1, Math.max(0, scrollPos()/maxScroll()));
+    var tgt = targetVB(p), moving = false;
+    for(var i=0;i<4;i++){
+      var d = tgt[i]-cur[i];
+      if(Math.abs(d) > 0.15){ cur[i] += d*0.085; moving = true; }  // ease toward target (raise for snappier)
+      else { cur[i] = tgt[i]; }
+    }
+    if(moving) setVB(cur);
+    requestAnimationFrame(frame);                      // always-on loop; writes only while moving
+  }
+  window.addEventListener('resize', layout);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
