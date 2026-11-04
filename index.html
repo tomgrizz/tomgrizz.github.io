@@ -4,7 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thomas Gristey — Fisheries Biologist</title>
-<meta name="description" content="Thomas Gristey: fisheries biologist, acoustic telemetry researcher, and builder of tools for fish monitoring on Lake Ontario and beyond.">
+<meta name="description" content="Thomas Gristey: fisheries biologist on Lake Ontario, acoustic telemetry researcher, and builder of computer-vision tools that count fish at fishways.">
+<link rel="canonical" href="https://tomgrizz.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#14333D">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tomgrizz.github.io/">
+<meta property="og:title" content="Thomas Gristey — Fisheries Biologist">
+<meta property="og:description" content="Salmonid assessment, acoustic telemetry, and a computer-vision model that counts salmon at Lake Ontario fishways.">
+<meta property="og:image" content="https://tomgrizz.github.io/ganaraska-film-poster.jpg">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
+<meta property="og:image:alt" content="Title frame of an animated film about the Corbett's Dam fishway on the Ganaraska River">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
@@ -98,6 +111,14 @@
   .nav-links{display:flex;gap:22px;flex-wrap:wrap}
   .nav-links a{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);border:none;font-weight:500}
   .nav-links a:hover{color:var(--magenta)}
+  /* phones: one row of links (the hero already shows the name), scrolls sideways rather than wrapping */
+  @media(max-width:600px){
+    .nav-inner{padding:12px}
+    .brand{display:none}
+    .nav-links{flex-wrap:nowrap;gap:12px;width:100%;justify-content:space-between;overflow-x:auto;scrollbar-width:none}
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-links a{font-size:10.5px;letter-spacing:.03em;white-space:nowrap}
+  }
 
   /* ---------- hero ---------- */
   header.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
@@ -182,6 +203,20 @@
   .research-figure figcaption{margin-top:10px;font-size:13.5px;font-style:italic;color:var(--sounding)}
   .research-card video{border:1.5px solid var(--ink);background:#000;width:100%;display:block}
   .research-card .repo-link{display:inline-block;margin-top:8px;font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+  .card-links{display:flex;flex-wrap:wrap;gap:0 22px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px 24px;margin:18px 0 10px;padding:12px 0 14px;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--line)}
+  .stats div{display:flex;flex-direction:column}
+  .stats dd{order:1;font-family:var(--display);font-size:28px;font-weight:600;line-height:1.15;color:var(--ink)}
+  .stats dt{order:2;font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sounding)}
+  /* pause/play control on the looping clips */
+  .vwrap{position:relative}
+  .vtoggle{
+    position:absolute;right:10px;bottom:10px;
+    font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:rgba(20,51,61,.8);border:1px solid rgba(255,255,255,.6);padding:5px 10px;cursor:pointer;
+    transition:background .18s,border-color .18s;
+  }
+  .vtoggle:hover{background:var(--magenta);border-color:var(--magenta)}
   .walleye-illo{margin:18px 0 0}
   .walleye-illo img{width:100%;max-width:300px;border:1px solid var(--line);background:#fff}
   .research-stack > .panel + .panel{margin-top:24px}
@@ -192,6 +227,36 @@
     content:"";position:absolute;left:2px;top:21px;width:9px;height:9px;
     border:1.5px solid var(--magenta);border-radius:50%;
   }
+
+  /* ---------- fishway film explainer ---------- */
+  .film-lede{max-width:680px;color:var(--ink-soft);margin:-6px 0 22px}
+  .film{margin:0 0 34px}
+  .film video{width:100%;height:auto;aspect-ratio:16/9;display:block;background:#000;border:1.5px solid var(--ink)}
+  .film-steps{
+    list-style:none;display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;
+    margin-top:18px;border-top:1.5px solid var(--ink);
+  }
+  @media(max-width:900px){.film-steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.film-steps{grid-template-columns:1fr}}
+  .film-steps li{border-bottom:1px solid var(--line)}
+  .film-steps button{
+    display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;
+    width:100%;height:100%;padding:14px 0 16px;
+    background:none;border:0;text-align:left;cursor:pointer;
+    font:inherit;color:inherit;
+  }
+  .film-steps .t{
+    display:inline-block;font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.14em;
+    color:var(--magenta);border:1px solid rgba(181,68,110,.55);padding:2px 7px;margin-bottom:8px;
+    transition:background .18s,color .18s;
+  }
+  .film-steps .s{display:block;font-family:var(--display);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .film-steps .d{display:block;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
+  .film-steps button:hover .s{color:var(--magenta)}
+  .film-steps button.is-on .t{background:var(--magenta);color:#fff;border-color:var(--magenta)}
+  .film-steps button.is-on .s{color:var(--magenta)}
+  .film figcaption{margin-top:14px;font-size:13.5px;font-style:italic;color:var(--sounding)}
+  .film figcaption a{font-style:normal;font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
 
   /* ---------- projects ---------- */
   .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
@@ -204,6 +269,9 @@
   .proj .shot{border:1px solid var(--line);margin:-6px 0 4px;width:100%;display:block}
   .proj .lang{font-family:var(--display);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:var(--sounding);align-self:flex-start;padding:4px 9px}
   .proj .lang.py{background:var(--ink)}
+  .proj .lang.live{background:var(--magenta)}
+  .proj > a{align-self:flex-start}
+  .proj-links{display:flex;flex-wrap:wrap;gap:4px 20px}
   .proj h3{font-family:var(--display);font-size:17px;font-weight:600}
   .proj p{font-size:15px;color:var(--ink-soft);flex:1}
   .proj a{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
@@ -300,7 +368,7 @@
     <div class="hero-copy">
       <h1>Thomas Gristey</h1>
       <p class="waterbody">Fisheries Biologist · Lake Ontario</p>
-      <p class="lede">I run assessment programs for Lake Ontario's salmonid fisheries, work on Atlantic salmon restoration, and build software tools to make fish monitoring faster and more accurate. Assessment &amp; Management Biologist with the Ontario Ministry of Natural Resources, former Biologist and Fishery Officer with Fisheries and Oceans Canada, and a former graduate student at Queen's University, where I earned my MSc.</p>
+      <p class="lede">I run assessment programs for Lake Ontario's salmonid fisheries, work on Atlantic salmon restoration, and build software tools to make fish monitoring faster and more accurate. Management Biologist with the Ontario Ministry of Natural Resources, former Salmon Biologist and Fishery Officer with Fisheries and Oceans Canada, and a former graduate student at Queen's University, where I earned my MSc.</p>
       <div class="hero-actions">
         <a class="btn primary" href="#research">View research</a>
         <a class="btn" href="https://github.com/tomgrizz" target="_blank" rel="noopener">GitHub ↗</a>
@@ -321,8 +389,8 @@
     <div>
       <p class="eyebrow"><span class="no">01</span> About</p>
       <h2>From enforcement patrols<br>to <span style="white-space:nowrap">p&#8209;values</span></h2>
-      <p>My career has covered nearly every side of fisheries work: enforcing the Fisheries Act by boat, ATV, and aircraft in northern British Columbia; leading Pacific salmon conservation and habitat projects with Indigenous and watershed partners; and running trapnet prorgams, salmon assesement, and electrofishing programs across Lake Ontario and the St. Lawrence.</p>
-      <p style="margin-top:14px">Today I work as an Management Biologist with the Lake Ontario Management Unit, where I plan field assessment programs, analyze fisheries data in R, and author chapters of the annual assessment reports that guide adaptive management. On the side, I write software that makes fish monitoring less painful — video review tools, duplicate-checkers for annotation pipelines, and spatial analysis packages.</p>
+      <p>My career has covered nearly every side of fisheries work: enforcing the Fisheries Act by boat, ATV, and aircraft in northern British Columbia; leading Pacific salmon conservation and habitat projects with Indigenous and watershed partners; and running trapnet programs, salmon assessment, and electrofishing programs across Lake Ontario and the St. Lawrence.</p>
+      <p style="margin-top:14px">Today I work as a Management Biologist with the Lake Ontario Management Unit, where I plan field assessment programs, analyze fisheries data in R, and author chapters of the annual assessment reports that guide adaptive management. On the side, I write software that makes fish monitoring less painful — a live computer-vision fish counter, video review tools, duplicate-checkers for annotation pipelines, and spatial analysis packages.</p>
     </div>
     <dl class="fact-table">
       <div><dt>Base</dt><dd>Kingston / Bay of Quinte, ON</dd></div>
@@ -340,19 +408,42 @@
     <div class="panel">
       <p class="eyebrow"><span class="no">02</span> Research · Computer Vision</p>
       <h2>Teaching computers to count fish</h2>
+      <p class="film-lede">How a salmon becomes a data point: a 90-second film that follows one Chinook up the Corbett's Dam fishway in Port Hope, through the fishway counter, to the GPU at Glenora Fisheries Station where the model names its species. Jump to any step below.</p>
+      <figure class="film">
+        <video id="fishway-film" controls preload="none" playsinline poster="ganaraska-film-poster.jpg" width="1920" height="1080" aria-label="From the river to the model: animated film of a Chinook salmon climbing the Ganaraska River fishway and being identified by the species model">
+          <source src="ganaraska-film.mp4" type="video/mp4">
+        </video>
+        <ol class="film-steps" aria-label="Film chapters">
+          <li><button type="button" data-t="0"><span class="t">0:00</span><span class="s">The fishway</span><span class="d">Chinook leap the falling water into the Corbett's Dam fishway and climb nine pools to Corbett's Pond.</span></button></li>
+          <li><button type="button" data-t="18"><span class="t">0:18</span><span class="s">The counter</span><span class="d">In the Riverwatcher counter, two arrays of infrared beams trace each fish's outline while a camera captures the frame.</span></button></li>
+          <li><button type="button" data-t="29"><span class="t">0:29</span><span class="s">The data link</span><span class="d">The record travels about 100 km east to Glenora Fisheries Station on the Bay of Quinte.</span></button></li>
+          <li><button type="button" data-t="48"><span class="t">0:48</span><span class="s">The hardware</span><span class="d">An NVIDIA RTX 5090 workstation runs the species model, down to the GPU's die.</span></button></li>
+          <li><button type="button" data-t="62"><span class="t">1:02</span><span class="s">The model</span><span class="d">A DINOv3 transformer reads the frame as 880 patches and links the parts of the fish; a DEIMv2 decoder finds it and names the species.</span></button></li>
+          <li><button type="button" data-t="78"><span class="t">1:18</span><span class="s">The count</span><span class="d">Box, species and confidence land in the review app, and the day's Chinook tally goes up by one.</span></button></li>
+        </ol>
+        <figcaption>Animated in Blender, with every shot built from Python scripts: simulated water, terrain from elevation data, satellite imagery and site photos. On-screen scores and counts are illustrative. &nbsp;<a href="https://tomgrizz.github.io/ganaraska-live/" target="_blank" rel="noopener">Follow this year's run live ↗</a></figcaption>
+      </figure>
       <div class="research-card">
         <div>
-          <h3>lake-ontario-fish-cv</h3>
-          <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">Automated species identification for fishway counters</p>
-          <p>Deep-learning models that detect, classify, and track salmonids in fishway counter video, replacing slow manual review with frame-by-frame species calls and confidence scores. Built with MNR Science &amp; Research and the University of Toronto to scale up counter assessment across Lake Ontario tributaries. Shown: live annotated detections from the Ganaraska River counter.</p>
-          <a class="repo-link" href="https://github.com/tomgrizz/lake-ontario-fish-cv" target="_blank" rel="noopener">View repo ↗</a>
+          <h3>Automated species identification for fishway counters</h3>
+          <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">Lake Ontario fish CV · with MNR Science &amp; Research and the University of Toronto</p>
+          <p>A deep-learning model that watches fishway counter video and replaces slow manual review with a species call for every fish. One DEIMv2 detector on a self-supervised DINOv3 backbone finds and identifies each salmonid in a single pass (Chinook, coho, Atlantic salmon, rainbow trout and brown trout), and a tracker follows it through the tunnel to count net upstream passage. Built to scale up counter assessment across Lake Ontario tributaries. Shown: live annotated detections from the Ganaraska River counter.</p>
+          <dl class="stats">
+            <div><dt>Held-out macro-F1</dt><dd>0.961</dd></div>
+            <div><dt>Unseen test fish</dt><dd>366</dd></div>
+            <div><dt>Species</dt><dd>5</dd></div>
+          </dl>
+          <p class="card-links">
+            <a class="repo-link" href="https://github.com/tomgrizz/salmonid-classifier-code" target="_blank" rel="noopener">Reproduction code ↗</a>
+            <a class="repo-link" href="https://tomgrizz.github.io/ganaraska-live/" target="_blank" rel="noopener">Live counter ↗</a>
+          </p>
         </div>
         <div>
-          <video src="fish-cv-demo.mp4" poster="fish-cv-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Annotated fishway counter video with computer-vision detection boxes and species-confidence scores"></video>
+          <video src="fish-cv-demo.mp4" poster="fish-cv-poster.jpg" autoplay muted loop playsinline preload="metadata" data-name="detection demo" aria-label="Annotated fishway counter video with computer-vision detection boxes and species-confidence scores"></video>
         </div>
       </div>
       <figure class="research-figure narrow">
-        <video src="feature-space.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Rotating 3D plot of the classification model's learned feature space, with species forming distinct clusters"></video>
+        <video src="feature-space.mp4" autoplay muted loop playsinline preload="metadata" data-name="feature-space plot" aria-label="Rotating 3D plot of the classification model's learned feature space, with species forming distinct clusters"></video>
         <figcaption>The model's learned feature space — each species clusters separately in three dimensions, the signal that lets the classifier tell them apart.</figcaption>
       </figure>
     </div>
@@ -365,6 +456,7 @@
           <h3>Investigating young walleye movement and migration in the Bay of Quinte and Lake Ontario using acoustic telemetry</h3>
           <p style="font-style:italic;color:var(--sounding);margin-bottom:14px">MSc Thesis · Queen's University · Freshwater Fisheries Conservation Lab · 2026</p>
           <p>Twenty-nine young, sexually mature male walleye were tagged with acoustic transmitters in the Napanee and Trent Rivers and tracked for five years across the GLATOS receiver network — producing 65 fish-years of fine-scale movement data on a life stage that traditional netting surveys could never resolve.</p>
+          <a class="repo-link" href="https://hdl.handle.net/1974/36059" target="_blank" rel="noopener">Read the thesis ↗</a>
           <figure class="walleye-illo">
             <img src="walleye.jpg" alt="Illustration of a walleye (Sander vitreus)" loading="lazy">
             <figcaption style="margin-top:8px;font-size:13px;font-style:italic;color:var(--sounding)">Walleye — <em>Sander vitreus</em></figcaption>
@@ -392,8 +484,40 @@
   <div class="wrap"><div class="panel">
     <p class="eyebrow"><span class="no">03</span> Code &amp; Models</p>
     <h2>Tools for fish people</h2>
-    <p style="max-width:620px;color:var(--ink-soft);margin:-6px 0 26px">Software I build to make fisheries monitoring faster and more accurate — fishway video review, interactive regulation modelling, and the spatial tooling behind this site's map.</p>
+    <p style="max-width:620px;color:var(--ink-soft);margin:-6px 0 26px">Software I build to make fisheries monitoring faster and more accurate — live counting and run forecasting, fishway video review, model evaluation, and the spatial tooling behind this site's map.</p>
     <div class="proj-grid">
+      <article class="proj">
+        <img class="shot" src="ganaraska-live.jpg" alt="Live counter page: the latest fish identified in the Ganaraska counter tunnel with a species box, beside the season's daily up and down counts" width="680" height="340" loading="lazy">
+        <span class="lang live">Live site · ML</span>
+        <h3>ganaraska-live</h3>
+        <p>The species model running in real time on the Ganaraska River counter's tunnel camera. A DETR detector finds each fish, a DINOv3 classifier names the species, and a tracker reads which way it swims; the page updates as fish pass. An experimental second read that runs alongside the official count.</p>
+        <div class="proj-links">
+          <a href="https://tomgrizz.github.io/ganaraska-live/" target="_blank" rel="noopener">Open live page ↗</a>
+          <a href="https://github.com/tomgrizz/ganaraska-live" target="_blank" rel="noopener">Repo ↗</a>
+        </div>
+      </article>
+      <article class="proj">
+        <img class="shot" src="guess-the-run.jpg" alt="Chart of the 2026 Ganaraska Chinook run: the live cumulative count against the model forecast and its uncertainty bands" width="640" height="426" loading="lazy">
+        <span class="lang live">Live site · Forecast</span>
+        <h3>guess-the-run</h3>
+        <p>A forecast of the fall 2026 Chinook return to the Ganaraska and Credit counters, opened up as a prediction pool for the assessment team. A cohort model scales last fall's two-year-olds by how many age-3s have historically followed, and the live counter line updates twice a day.</p>
+        <div class="proj-links">
+          <a href="https://tomgrizz.github.io/guess-the-run/" target="_blank" rel="noopener">Open live page ↗</a>
+          <a href="https://github.com/tomgrizz/guess-the-run" target="_blank" rel="noopener">Repo ↗</a>
+        </div>
+      </article>
+      <article class="proj">
+        <span class="lang py">Python · ML</span>
+        <h3>salmonid-classifier-code</h3>
+        <p>Reproduction code for the species model: the held-out evaluation (macro-F1 0.961 on 366 fish), counting and movement analysis, agreement statistics against technician counts, and the manuscript figures. The headline results rerun from committed data, no GPU needed.</p>
+        <a href="https://github.com/tomgrizz/salmonid-classifier-code" target="_blank" rel="noopener">View repo ↗</a>
+      </article>
+      <article class="proj">
+        <span class="lang py">Python · Streamlit</span>
+        <h3>Fishway_model_performance</h3>
+        <p>Dashboard that matches the model's detections to technician counts from the Credit River counter, with precision–recall curves, a species confusion matrix, and a list of the clips the model struggled with.</p>
+        <a href="https://github.com/tomgrizz/Fishway_model_performance" target="_blank" rel="noopener">View repo ↗</a>
+      </article>
       <article class="proj">
         <img class="shot" src="fish-counter.jpg" alt="Fish counter video frame from the Credit River with a detection box drawn around a migrating salmonid" width="340" height="255" loading="lazy">
         <span class="lang py">Python · ML</span>
@@ -417,21 +541,15 @@
       </article>
       <article class="proj">
         <span class="lang py">Python</span>
-        <h3>salmonid_app</h3>
-        <p>Python application supporting salmonid monitoring workflows.</p>
-        <a href="https://github.com/tomgrizz/salmonid_app" target="_blank" rel="noopener">View repo ↗</a>
-      </article>
-      <article class="proj">
-        <span class="lang py">Python</span>
         <h3>CVAT_Dupi_Application</h3>
         <p>Checks CVAT annotation files for duplicates — quality control for computer-vision datasets built from fish monitoring video.</p>
         <a href="https://github.com/tomgrizz/CVAT_Dupi_Application" target="_blank" rel="noopener">View repo ↗</a>
       </article>
       <article class="proj">
-        <span class="lang">Installer</span>
-        <h3>test_installer</h3>
-        <p>Packaging and installer for the fish counter application.</p>
-        <a href="https://github.com/tomgrizz/test_installer" target="_blank" rel="noopener">View repo ↗</a>
+        <span class="lang py">Python · Gradio</span>
+        <h3>salmonid_app</h3>
+        <p>Upload a counter video, or a zip of them, and get back annotated video plus a JSON of tracked, counted fish. Runs on a GPU when one is available, ships with a Docker build, and can load a custom model.</p>
+        <a href="https://github.com/tomgrizz/salmonid_app" target="_blank" rel="noopener">View repo ↗</a>
       </article>
     </div>
   </div></div>
@@ -445,7 +563,7 @@
       <div class="role">
         <span class="when">2023 — Present</span>
         <div>
-          <h3>Assessment / Management Biologist</h3>
+          <h3>Management Biologist</h3>
           <p class="org">Ontario Ministry of Natural Resources — Lake Ontario Management Unit</p>
           <p>Plan, implement, and analyze fisheries monitoring across Lake Ontario. Manage the Credit and Ganaraska fishway salmonid assessments and the Atlantic salmon adult assessment; author annual report chapters presented at the Great Lakes Fishery Commission; brief stakeholders, Indigenous communities, and Fishery Management Zone Councils.</p>
         </div>
@@ -463,7 +581,7 @@
         <div>
           <h3>Salmon Biologist</h3>
           <p class="org">Fisheries and Oceans Canada — Williams Lake, BC</p>
-          <p>Salmon Stock assessment, broodstock capture, and habitat work for Pacific salmon conservation; partnered with Indigenous organizations and watershed groups on collaborative governance and annual fishing plans.</p>
+          <p>Salmon stock assessment, broodstock capture, and habitat work for Pacific salmon conservation; partnered with Indigenous organizations and watershed groups on collaborative governance and annual fishing plans.</p>
         </div>
       </div>
       <div class="role">
@@ -599,6 +717,71 @@
   }
   window.addEventListener('resize', layout);
   requestAnimationFrame(frame);
+})();
+
+// fishway film: chapter buttons seek the video; the current chapter is highlighted while it plays
+(function(){
+  var v = document.getElementById('fishway-film');
+  if(!v) return;
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.film-steps button'));
+  var ts = btns.map(function(b){ return parseFloat(b.getAttribute('data-t')); });
+  function mark(k){
+    btns.forEach(function(b, i){
+      b.classList.toggle('is-on', i === k);
+      if(i === k) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+  }
+  btns.forEach(function(b, i){
+    b.addEventListener('click', function(){
+      v.currentTime = ts[i];
+      var p = v.play(); if(p && p.catch) p.catch(function(){});
+      mark(i);
+    });
+  });
+  v.addEventListener('timeupdate', function(){
+    var k = 0;
+    for(var i = 0; i < ts.length; i++){ if(v.currentTime >= ts[i] - 0.05) k = i; }
+    mark(k);
+  });
+})();
+
+// looping clips: a pause/play button, no autoplay for reduced-motion visitors, and paused while off-screen
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var vids = document.querySelectorAll('video[autoplay][loop]');
+  Array.prototype.forEach.call(vids, function(v){
+    var wrap = document.createElement('div');
+    wrap.className = 'vwrap';
+    v.parentNode.insertBefore(wrap, v);
+    wrap.appendChild(v);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'vtoggle';
+    wrap.appendChild(b);
+
+    var name = v.getAttribute('data-name') || 'video';
+    var held = reduce;   // true once the visitor (or their reduced-motion setting) wants it stopped
+    var seen = true;     // on screen?
+    if(reduce) v.removeAttribute('autoplay');
+
+    function sync(){
+      if(held || !seen){ v.pause(); }
+      else { var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+    }
+    function label(){
+      var on = !v.paused;
+      b.textContent = on ? 'Pause' : 'Play';
+      b.setAttribute('aria-label', (on ? 'Pause ' : 'Play ') + name);
+    }
+    v.addEventListener('play', label);
+    v.addEventListener('pause', label);
+    b.addEventListener('click', function(){ held = !v.paused; sync(); });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){ seen = es[0].isIntersecting; sync(); }, {threshold: 0.1}).observe(v);
+    }
+    sync();
+    label();
+  });
 })();
 </script>
 
